@@ -1,0 +1,220 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Pakete %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{pgfpages}
+\usepackage{multirow}	% Zusammenfuegen von Zeilen und Spalten in Tabellen
+\usepackage{longtable}	% Mehrseitige Tabellen
+\usepackage{listings}   % Quellcodeanzeige
+\usepackage{float}      % Verbesserte Floats
+\usepackage{ifthen}     % Ermoeglicht If-Abfragen
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Layout Einstellungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Das verwendete Theme
+\usetheme[secheader]{Boadilla}
+
+% Fuer den Artikel Modus zusaetzlich noetige Pakete.
+\mode<article> {
+ \usepackage[textwidth = 15cm, textheight = 24cm, pdftex]{geometry}
+ \usepackage{amsthm}
+ \usepackage{amssymb} % Zusätzliche mathematische Symbole
+ \usepackage[bookmarksnumbered=true]{hyperref}
+
+ \setlength{\parindent}{0pt}
+}
+
+
+% Einstellungen der Quelltextanzeige fuer den R Code
+%\lstset{
+%  language=R,			% R als Sprache waehlen
+%  frame=lines,			% Rahmen erstellen
+%  basicstyle=\footnotesize	% Kleine Schrift  
+%}
+\lstset{
+  language=R,           		% R als Sprache waehlen
+  columns=fixed,				% Feste Breite
+  frame=lines,          		% Rahmen erstellen
+  basicstyle=\small\ttfamily,   % Standardschriftart
+  commentstyle=\ttfamily,		% Kommentare
+  showstringspaces=false		% Keine Leerzeichen in Strings
+}
+
+
+% Templateanpassungen zur Anzeige von Kapitelnummern im Header
+\setbeamertemplate{headline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,right]{section in
+head/foot}%
+    \usebeamerfont{section in head/foot}
+ \ifthenelse{\not\equal{}{\insertsectionhead}}
+   {\thesection. \insertsectionhead}{ }\hspace*{2ex}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,left]{subsection in
+head/foot}%
+    \usebeamerfont{subsection in
+head/foot}\hspace*{2ex}\ifthenelse{\not\equal{0}{\thesubsection}}{
+\thesection.\thesubsection. \insertsubsectionhead}{ }
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% Standardanfang fuer jedes Kapitel
+\AtBeginSection{
+ \begin{frame}
+  \tableofcontents[subsectionstyle=show/show/hide, sectionstyle=show/hide]
+ \end{frame}
+}
+
+
+
+%%%%%%%%%%%%%% Befehle zur Layoutsteuerung und Grafikeinbindung %%%%%%%%%%%%%%
+
+% Abkuerzungen ueblicher Befehle
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+
+% Schoene Tabellenabstände zu horizontalen Linien
+\newcommand\T{\rule{0pt}{2.6ex}}
+\newcommand\B{\rule[-1.2ex]{0pt}{0pt}}
+
+% Abstaende
+\newcommand{\bgs}{\bigskip}
+
+% Kommando zum Anzeigen von Grafiken:
+% Parameter:
+% #1 - Datei ohne Verzeichnis und Endung
+% #2 - Caption
+% #3 - Skalierung auf Folien
+% #4 - Skalierung auf Skript
+\newcommand{\skriptgrafik}[4]
+{
+  \begin{figure}[H]\begin{center}
+  \mode<presentation>{
+    \includegraphics[scale=#3,type=png,read=.png,ext=.png]
+    {grafiken/#1}
+    \caption{#2}
+  }
+
+  \mode<article>{
+    \includegraphics[scale=#4,type=png,read=.png,ext=.png]
+    {grafiken/#1}
+    \caption{#2}
+    \label{fig:#1}
+  }
+  \end{center}\end{figure}
+}
+
+% Kommando zum Anzeigen von R Grafiken mit Quellcodeverweis:
+% Parameter:
+% #1 - Datei ohne Verzeichnis und Endung
+% #2 - Caption
+% #3 - Skalierung auf Folien
+% #4 - Skalierung auf Skript
+\newcommand{\rgrafik}[4]
+{
+  \begin{figure}[H]\begin{center}
+  \mode<presentation>{
+    \includegraphics[scale=#3,type=png,read=.png,ext=.png]
+    {grafiken/#1}
+    \caption{#2}
+  }
+
+  \mode<article>{
+    \includegraphics[scale=#4,type=png,read=.png,ext=.png]
+    {grafiken/#1}
+    \caption{#2 (Quellcode auf S.\pageref{lst:#1})}
+    \label{fig:#1}
+  }
+  \end{center}\end{figure}
+}
+
+% Kommando zum Anzeigen von R Quelltexten
+% Parameter
+% #1 - Datei ohne Verzeichnis und endung
+% #2 Angezeigter Dateiname
+\newcommand{\rcode}[2]
+{
+  \lstinputlisting[label=lst:#1,
+  caption=#2 (erzeugt Abbildung \ref{fig:#1})
+  ]{../code/#1.r}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Verschiedene Buchstaben %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Griechische Buchstaben
+\newcommand{\al}{\alpha}
+\newcommand{\be}{\beta}
+\newcommand{\ga}{\gamma}
+\newcommand{\si}{\sigma}
+
+% Buchstaben mit Querbalken
+\newcommand{\bR}{\bar{R}}
+\newcommand{\bY}{\bar{Y}}
+
+% Buchstaben mit Hut
+\newcommand{\hY}{\hat{Y}}
+\newcommand{\hal}{\hat{\alpha}}
+\newcommand{\hbe}{\hat{\beta}}
+\newcommand{\hga}{\hat{\gamma}}
+\newcommand{\hmu}{\hat{\mu}}
+\newcommand{\hsi}{\hat{\si}}
+
+
+% Buchstaben mit Tilde
+\newcommand{\tZ}{\tilde{Z}}
+
+%%%%%%%%%%%%%%%%%%%% Mathematische Symbole und Abkürzungen %%%%%%%%%%%%%%%%%%%%
+
+% Abkuerzungen bestehender Befehle
+\newcommand{\dss}{\displaystyle}
+\newcommand{\fr}{\frac}
+\newcommand{\ovl}{\overline}
+\newcommand{\li}{\left}
+\newcommand{\ri}{\right}
+
+% Abkuerzungen bestehender Umgebunden
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+\newcommand{\bpm}{\begin{pmatrix}}
+\newcommand{\epm}{\end{pmatrix}}
+
+% Rang
+\newcommand{\Rang}{\mathrm{Rang}}
+
+% WT Symbole
+\newcommand{\E}{\mathbf{E}}
+\newcommand{\Pb}{\mathbf{P}}
+\newcommand{\Var}{\mathbf{Var}}
+\newcommand{\Cov}{\mathbf{Cov}}
+\newcommand{\Cor}{\mathbf{Cor}}
+
+% Quadratsummen
+\newcommand{\SSA}{\mathrm{SSA}}
+\newcommand{\SSAB}{\mathrm{SSAB}}
+\newcommand{\SSB}{\mathrm{SSB}}
+\newcommand{\SSE}{\mathrm{SSE}}
+\newcommand{\SSR}{\mathrm{SSR}}
+\newcommand{\SST}{\mathrm{SST}}
+
+
+\newcommand{\MSA}{\mathrm{MSA}}
+\newcommand{\MSB}{\mathrm{MSB}}
+\newcommand{\MSAB}{\mathrm{MSAB}}
+\newcommand{\MSE}{\mathrm{MSE}}
+\newcommand{\MSR}{\mathrm{MSR}}
+
+% Residualquadratsumme
+\newcommand{\RSS}{\mathrm{RSS}}
+
+
+% Wahrscheinlichkeitsverteilungen
+\newcommand{\expd}{\mathrm{Exp}}
+\newcommand{\lnd}{\mathrm{LN}}
+\newcommand{\nd}{\mathrm{N}}

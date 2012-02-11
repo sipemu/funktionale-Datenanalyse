@@ -1,0 +1,83 @@
+\documentclass[xcolor=dvipsnames, compress, serif, professionalfont, handout]{beamer}
+
+\usepackage{pgfpages}
+
+% Gestaltung des themes
+\usetheme{CambridgeUS}
+\usecolortheme{seagull}
+
+%weitere Farbe spezifizieren:
+%Farben von dem Humantheme
+\definecolor{Orange}{RGB}{240,165,19}
+\definecolor{Human-Base}{RGB}{129,102,71}
+%Farben aus dem Inyokatheme
+\definecolor{uuheader1}{RGB}{164,143,101}
+\definecolor{uuheader2}{RGB}{129,106,59}
+
+%Für den Titleframe
+\setbeamertemplate{title page}[default][rounded=true]
+\setbeamercolor{title}{fg=black, bg=white}
+
+% Ohne footer
+\setbeamertemplate{footline}{}
+
+\beamertemplatenavigationsymbolsempty
+
+\useinnertheme{circles}
+\setbeamercovered{transparent}
+
+\setbeamertemplate{enumerate items}[circle]
+\setbeamercolor{enumerate items}{fg=RoyalBlue, bg = white}
+
+\setbeamertemplate{itemize items}[triangle]
+\setbeamercolor{itemize item}{fg=RoyalBlue, bg = white}
+
+% Pakete
+\usepackage{graphicx}
+\usepackage{amsmath, amsfonts, epsfig, xspace}
+\usepackage{german}
+\usepackage{float}
+\usepackage{multimedia}
+\usepackage[normal,tight,center]{subfigure}
+\setlength{\subfigcapskip}{-.5em}
+
+%Schrift  
+\usepackage{pxfonts}
+\usepackage{eulervm} 
+
+\usepackage{color}
+\definecolor{grund}{gray}{.5} 
+
+\title[ ]{funktionale Varianzanalyse}
+%\author{Diplom-Mathematiker Simon M\"uller}
+\date{27. September 2011}
+\institute[ISA]{Institut f\"ur Stochastik und Anwendungen}
+\author{Dr. Simon M\"uller}
+
+\begin{document}
+
+\frame{
+\titlepage
+\thispagestyle{empty}
+}
+
+
+\frame{
+ \frametitle{Gliederung}
+\tableofcontents[section, hidesubsections]
+}
+
+\section{Einf\"uhrung}
+\frame{
+	\frametitle{Gliederung}\tableofcontents[currentsection, subsection]
+}
+\subsection{Was sind funktionale Daten?}
+
+\section{ }
+\frame{
+	\begin{center}
+		\Huge{\textbf{Vielen Dank f\"ur Ihre Aufmerksamkeit!}}
+	\end{center}
+}
+
+\end{document}
