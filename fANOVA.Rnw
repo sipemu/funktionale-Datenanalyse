@@ -49,12 +49,16 @@
 \definecolor{grund}{gray}{.5} 
 
 \title[ ]{funktionale Varianzanalyse}
-%\author{Diplom-Mathematiker Simon M\"uller}
-\date{27. September 2011}
-\institute[ISA]{Institut f\"ur Stochastik und Anwendungen}
+\date{22. Februar 2012}
+\institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ Universit\"at Stuttgart}
 \author{Dr. Simon M\"uller}
 
 \begin{document}
+
+% Lese R-Code ein
+<<external-code, cache=FALSE>>=
+read_chunk('fANOVA.R')
+@
 
 \frame{
 \titlepage
