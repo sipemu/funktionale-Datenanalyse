@@ -48,7 +48,7 @@
 \usepackage{color}
 \definecolor{grund}{gray}{.5} 
 
-\title[ ]{funktionale Varianzanalyse}
+\title[ ]{Lineare Modelle für Funktionale Antwortvariablen}
 \date{22. Februar 2012}
 \institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ Universit\"at Stuttgart}
 \author{Dr. Simon M\"uller}
@@ -61,6 +61,8 @@
 \fi
 
 \begin{document}
+
+% Lade die benötigten R-Pakete
 <<setup,echo=FALSE,results=hide,cache=FALSE,message=FALSE>>=
 options(width = 90, replace.assign = TRUE)
 knit_hooks$set(fig = function(before, options, envir){
@@ -75,6 +77,7 @@ require(reshape)
 
 %\SweaveOpts{fig.path=figure/hw8-, cache.path=cache/hw8-, dev=pdf, external=TRUE, fig.width=7, fig.height=4, fig.align=center, cache=TRUE, fig.show=hold, background=1.0;1.0;1.0, par=TRUE}
 
+% Lade den R-Code
 <<external-code, cache=FALSE, echo=FALSE>>=
 read_chunk('fANOVA.R')
 @
@@ -90,12 +93,12 @@ read_chunk('fANOVA.R')
   \tableofcontents[section, hidesubsections]
 \end{frame}
 
-\section{Einf\"uhrung}
+\section{Funktionale Varianzanalyse}
 \begin{frame}[fragile]
   \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
-<<<<<<< HEAD
+
 \subsection{Trends von Seev\"ogelpopulationen}
 \begin{frame}[fragile]
 \frametitle{Der Datensatz}
@@ -104,12 +107,13 @@ read_chunk('fANOVA.R')
     Reihe von Buchten auf den Kodiak Inseln (Alaska) gez\"ahlt.
     \item Seit $1986$ wird ein Standardprotokol verwendet, bei welchem durch die 
     \textit{Kodiak National Wildlife Refuge} eine feste Anzahl an Gebieten in 
-    jeder Bucht j\"ahrlich besucht wird. sd
+    jeder Bucht j\"ahrlich besucht wird.
   \end{itemize}
 \end{frame} 
 
 \begin{frame}[fragile]
 \frametitle{Trends von Seev\"ogelpopulationen}
+% Führe Vorberechnungen für die Grafiken aus
 <<GR_DIET, echo=FALSE>>=
 @  
 \hspace{-0.1cm}   
@@ -122,26 +126,14 @@ read_chunk('fANOVA.R')
 <<GR_Fisch, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
 @  
   \end{minipage}
-=======
-\subsection{Was sind funktionale Daten?}
-\begin{frame}[fragile]
-You can test if \textbf{knitr} works with this minimal demo. OK, let's
-get started with some boring random numbers:
- 
-<<boring-random>>=
-set.seed(1121)
-(x=rnorm(20))
-mean(x);var(x)
-@
 \end{frame}
 
+\section{Linear Funktionales Modell mit Funktionaler Beobachtung}
 \begin{frame}[fragile]
-<<GR_DIET, echo=FALSE, out.height=.7\linewidth, out.width=.7\linewidth>>=
-@
->>>>>>> f8651e4aef5eb96939d9eeb4d5d3a7c5f8e64692
+  \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
-\section{ }
+\section{}
 \begin{frame}[fragile]
 	\begin{center}
 		\Huge{\textbf{Vielen Dank f\"ur Ihre Aufmerksamkeit!}}
