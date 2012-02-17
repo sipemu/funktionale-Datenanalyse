@@ -98,7 +98,16 @@ read_chunk('fANOVA.R')
   \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
+<<<<<<< HEAD
 \subsection{Datensatz: Seev\"ogelpopulation}
+=======
+
+<<<<<<< HEAD
+\subsection{Vorstellung Datensatz: Seev\"ogelpopulation}
+=======
+\subsection{Trends von Seev\"ogelpopulationen}
+>>>>>>> ad23bf590e8567d0e278b442c1162c1e704ca487
+>>>>>>> 69b40aa1a04889f9af7203c0656136a4d49cc8fd
 \begin{frame}[fragile]
 \frametitle{Der Datensatz}
   \begin{itemize}
