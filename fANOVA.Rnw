@@ -92,7 +92,7 @@ read_chunk('fANOVA.R')
 
 \section{Einf\"uhrung}
 \begin{frame}[fragile]
-	\frametitle{Gliederung}\tableofcontents[currentsection, subsection]
+  \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
 <<<<<<< HEAD

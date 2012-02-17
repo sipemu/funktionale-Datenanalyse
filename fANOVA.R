@@ -1,4 +1,5 @@
 ## @knitr GR_DIET
+
 # R-Code zum Vortrag fANOVA
 data(seabird)
 
@@ -74,7 +75,7 @@ ggplot(subset(meltlogCounts, diet=="Fische")) +
   geom_line(aes(x=year, y=logCount, group=species, lty=species), size=1) + 
   geom_line(aes(x=year, y=logCount), data=subset(meltmean, diet=="Fische"), size=1, col='RoyalBlue') +
   opts(legend.position="none", title="Ernährung durch Fische") +
-   xlab("") + ylab("") + ylim(c(-1.5, 1.7))
+  xlab("") + ylab("") + ylim(c(-1.5, 1.7))
 
 ## @knitr GR_beides
 theme_set(theme_bw())
