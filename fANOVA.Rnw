@@ -99,7 +99,11 @@ read_chunk('fANOVA.R')
 \end{frame}
 
 
+<<<<<<< HEAD
 \subsection{Vorstellung Datensatz: Seev\"ogelpopulation}
+=======
+\subsection{Trends von Seev\"ogelpopulationen}
+>>>>>>> ad23bf590e8567d0e278b442c1162c1e704ca487
 \begin{frame}[fragile]
 \frametitle{Der Datensatz}
   \begin{itemize}
