@@ -53,35 +53,70 @@
 \institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ Universit\"at Stuttgart}
 \author{Dr. Simon M\"uller}
 
-\begin{document}
 
-% Lese R-Code ein
+% use footnotesize for knitr output
+\ifdefined\knitrout
+  \renewenvironment{knitrout}{\begin{footnotesize}}{\end{footnotesize}}
+\else
+\fi
+
+\begin{document}
+<<setup,echo=FALSE,results=hide,cache=FALSE,message=FALSE>>=
+options(width = 90, replace.assign = TRUE)
+knit_hooks$set(fig = function(before, options, envir){
+    if(before && options$fig.show != "none")
+        par(mar = c(4, 4, 0.1, 0.1), cex.lab = 0.95, cex.axis = 0.9,
+            mgp = c(2, 0.7, 0), tcl = -0.3)
+      } )
+require(fda)
+require(ggplot2)
+require(reshape)
+@
+
+%\SweaveOpts{fig.path=figure/hw8-, cache.path=cache/hw8-, dev=pdf, external=TRUE, fig.width=7, fig.height=4, fig.align=center, cache=TRUE, fig.show=hold, background=1.0;1.0;1.0, par=TRUE}
+
 <<external-code, cache=FALSE, echo=FALSE>>=
 read_chunk('fANOVA.R')
 @
 
-\frame{
-\titlepage
-\thispagestyle{empty}
-}
+\begin{frame}[fragile]
+  \titlepage
+  \thispagestyle{empty}
+\end{frame}
 
 
-\frame{
- \frametitle{Gliederung}
-\tableofcontents[section, hidesubsections]
-}
+\begin{frame}[fragile]
+  \frametitle{Gliederung}
+  \tableofcontents[section, hidesubsections]
+\end{frame}
 
 \section{Einf\"uhrung}
-\frame{
+\begin{frame}[fragile]
 	\frametitle{Gliederung}\tableofcontents[currentsection, subsection]
-}
+\end{frame}
+
 \subsection{Was sind funktionale Daten?}
+\begin{frame}[fragile]
+You can test if \textbf{knitr} works with this minimal demo. OK, let's
+get started with some boring random numbers:
+ 
+<<boring-random>>=
+set.seed(1121)
+(x=rnorm(20))
+mean(x);var(x)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<GR_DIET, echo=FALSE, out.height=.7\linewidth, out.width=.7\linewidth>>=
+@
+\end{frame}
 
 \section{ }
-\frame{
+\begin{frame}[fragile]
 	\begin{center}
 		\Huge{\textbf{Vielen Dank f\"ur Ihre Aufmerksamkeit!}}
 	\end{center}
-}
+\end{frame}
 
 \end{document}
