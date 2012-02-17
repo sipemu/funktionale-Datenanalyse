@@ -98,8 +98,7 @@ read_chunk('fANOVA.R')
   \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
-
-\subsection{Vorstellung Datensatz: Seev\"ogelpopulation}
+\subsection{Datensatz: Seev\"ogelpopulation}
 \begin{frame}[fragile]
 \frametitle{Der Datensatz}
   \begin{itemize}
