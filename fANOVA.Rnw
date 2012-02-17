@@ -95,6 +95,7 @@ read_chunk('fANOVA.R')
 	\frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
+<<<<<<< HEAD
 \subsection{Trends von Seev\"ogelpopulationen}
 \begin{frame}[fragile]
 \frametitle{Der Datensatz}
@@ -121,6 +122,23 @@ read_chunk('fANOVA.R')
 <<GR_Fisch, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
 @  
   \end{minipage}
+=======
+\subsection{Was sind funktionale Daten?}
+\begin{frame}[fragile]
+You can test if \textbf{knitr} works with this minimal demo. OK, let's
+get started with some boring random numbers:
+ 
+<<boring-random>>=
+set.seed(1121)
+(x=rnorm(20))
+mean(x);var(x)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<GR_DIET, echo=FALSE, out.height=.7\linewidth, out.width=.7\linewidth>>=
+@
+>>>>>>> f8651e4aef5eb96939d9eeb4d5d3a7c5f8e64692
 \end{frame}
 
 \section{ }

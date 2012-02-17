@@ -1,4 +1,8 @@
 ## @knitr GR_DIET
+<<<<<<< HEAD
+=======
+
+>>>>>>> f8651e4aef5eb96939d9eeb4d5d3a7c5f8e64692
 # R-Code zum Vortrag fANOVA
 data(seabird)
 
@@ -60,6 +64,7 @@ names(meltlogCounts)[4] <- "logCount"
 meltlogCounts$year <- rep(yearObs, 13) 
 
 # Grafiken 
+<<<<<<< HEAD
 
 ## @knitr GR_Krustentier
 theme_set(theme_bw())
@@ -78,9 +83,16 @@ ggplot(subset(meltlogCounts, diet=="Fische")) +
    xlab("") + ylab("") + ylim(c(-1.5, 1.7))
 
 ## @knitr GR_beides
+=======
+theme_set(theme_bw())
+>>>>>>> f8651e4aef5eb96939d9eeb4d5d3a7c5f8e64692
 ggplot(meltlogCounts) + 
   geom_line(aes(x=year, y=logCount, group=species, lty=species)) + 
   geom_point(aes(x=year, y=logCount, group=species), shape=2, size=1) + 
   geom_line(aes(x=year, y=logCount, col=diet), data=meltmean, size=1) +
   facet_grid(.~diet) + opts(legend.position="none") +
+<<<<<<< HEAD
   scale_colour_hue("", l=40) + xlab("") + ylab("") + ylim(c(-1.5, 1.7))
+=======
+  scale_colour_hue("", l=40) + xlab("") + ylab("")
+>>>>>>> f8651e4aef5eb96939d9eeb4d5d3a7c5f8e64692
