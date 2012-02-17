@@ -3,8 +3,9 @@
 # R-Code zum Vortrag fANOVA
 data(seabird)
 
-# Code von Ramsay und Silverman 
+# Code übernommen von Ramsay und Silverman: 
 # http://ego.psych.mcgill.ca/misc/fda/downloads/FDAfuns/R/inst/scripts/fdarm-ch10.R
+# mit Änderungen bei der Grafik
 
 # Auswahl der beiden Orte
 orte <- c('Uganik', 'Uyak')
@@ -53,7 +54,7 @@ dflogCounts$species <- row.names(dflogCounts)
 dflogCounts$diet[shellfishindex] <- "Krustentiere"
 dflogCounts$diet[fishindex] <- "Fische"
 names(dflogCounts) <- c(as.character(yearObs), "species", "diet")
-meltlogCounts <- melt(dflogCounts, id = c("diet", "species"), measure.vars=1:19)
+meltlogCounts <- melt(dflogCounts, id=c("diet", "species"), measure.vars=1:19)
 meltlogCounts <- meltlogCounts[order(meltlogCounts$species, meltlogCounts$diet), ]
 row.names(meltlogCounts) <- NULL
 names(meltlogCounts)[3] <- "year"

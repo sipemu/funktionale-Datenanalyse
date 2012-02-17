@@ -5,4 +5,4 @@ Benötigt:
 R (2.14.1)
 
 R-Pakete:
-fda, knitr, ggplot2
+fda, knitr, ggplot2, reshape
