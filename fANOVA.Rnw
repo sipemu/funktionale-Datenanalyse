@@ -60,6 +60,9 @@
 \else
 \fi
 
+\definecolor{orange}{HTML}{E69F00}
+\definecolor{orange}{HTML}{E69F00}
+
 \begin{document}
 
 % Lade die benötigten R-Pakete
@@ -73,10 +76,11 @@ knit_hooks$set(fig = function(before, options, envir){
 require(fda)
 require(ggplot2)
 require(reshape)
+require(RgoogleMaps)
 @
 
-%\SweaveOpts{fig.path=figure/hw8-, cache.path=cache/hw8-, dev=pdf, external=TRUE, fig.width=7, fig.height=4, fig.align=center, cache=TRUE, fig.show=hold, background=1.0;1.0;1.0, par=TRUE}
-
+%\SweaveOpts{fig.path=figure/hw8-, cache.path=cache/hw8-, dev=tikz, external=TRUE, fig.width=7, fig.height=7, fig.align=center, cache=TRUE, fig.show=hold, background=1.0;1.0;1.0, par=TRUE}
+ 
 % Lade den R-Code
 <<external-code, cache=FALSE, echo=FALSE>>=
 read_chunk('fANOVA.R')
@@ -98,28 +102,27 @@ read_chunk('fANOVA.R')
   \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
-\subsection{Datensatz: Seev\"ogelpopulation}
+\subsection{Datensatz: Vogelpopulation}
 \begin{frame}[fragile]
-\frametitle{Der Datensatz}
+\frametitle{Herkunft Datensatz}
   \begin{itemize}
-    \item Die Anzahl von $13$ Seevogelarten wurde j\"ahrlich seit $1979$ im Winter in einer 
-    Reihe von Buchten auf den Kodiak Inseln (Alaska) gez\"ahlt.
-    \item Seit $1986$ wird ein Standardprotokol verwendet, bei welchem durch die 
-    \textit{Kodiak National Wildlife Refuge} eine feste Anzahl an Gebieten in 
-    jeder Bucht j\"ahrlich besucht wird.
+    \item Die Anzahl von $15$ Vogelarten wurde j\"ahrlich seit $1986$ im Winter in einer 
+    Reihe von Buchten und festen Gebieten auf den Kodiak Inseln (Alaska) von der \textit{Kodiak National Wildlife Refuge} gez\"ahlt.
+    \item Im der nachfolgenden Analyse sind die Daten:
+      \begin{itemize}
+        \item auf die $2$ Buchten Uganik und Uyak beschr\"ankt und
+        \item es werden $13$ von den $15$ Vogelarten betrachtet.
+      \end{itemize}
   \end{itemize}
+
 \end{frame} 
 
-\begin{frame}[fragile]
-\frametitle{Das Modell}
-Wir betrachten folgendes Modell:
-$$
-y_{ijk}(t) = \mu(t) + (-1)^{i} \alpha(t) + \beta_{ij}(t) + \varepsilon_{ijk}(t)
-$$
-\end{frame} 
 
 \begin{frame}[fragile]
-\frametitle{Trends von Seev\"ogelpopulationen}
+\frametitle{Vogelpopulationen nach Ern\"ahrung}
+  \textbf{Fragestellung: } \\
+  Es soll untersucht werden, ob und welchen Einflu{\ss} die Ern\"ahrung
+  auf die Population der Vogelarten hat.
 % Führe Vorberechnungen für die Grafiken aus
 <<GR_DIET, echo=FALSE>>=
 @  
@@ -131,9 +134,80 @@ $$
   \hspace{0.1cm}
   \begin{minipage}{0.48\textwidth} 
 <<GR_Fisch, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
-@  sd
-  \end{minipage}
+@
+\end{minipage}
 \end{frame}
+
+\subsection{fANOVA: Vogelpopulation}
+\begin{frame}[fragile]
+\frametitle{Formalisierung}
+  \begin{itemize}
+    \item Wir analysieren den Einflu{\ss} der Ern\"ahrung auf den zeitlichen 
+          Trend der logarithmierten gemittelten Anzahl von V\"ogeln pro Art, 
+          wobei der Faktor Vogelart in den Faktor Ern\"ahrung geschachtelt ist.
+    \item Die Vogelarten wurden in $2$ Faktorstufen ($=$ 
+          \{\textit{Krusten- bzw. Weichtiere}; \textit{Fische}\}) eingeteilt
+    \begin{itemize}
+      \item Die Stichprobe zur FS \textit{Krustentiere} enth\"alt $n_1 = 6$ 
+            Elemente
+      \item Die Stichprobe zur FS \textit{Fische} enth\"alt $n_2 = 7$ Elemente
+    \end{itemize}
+    \item Untersuchungszeitraum: $1986-2005$ (ohne $1998$) 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Das Modell}
+Wir betrachten folgendes Modell:
+$$
+y_{ijk}(t) = \mu(t) + (-1)^{i} \alpha(t) + \beta_{ij}(t) + \varepsilon_{ijk}(t)
+$$
+\begin{itemize} 
+  \item $i=1,2$ inidiziert die Nahrungsquelle ($=\{$Krusten- bzw. Weichtier, 
+        Fisch$\}$)
+  \item $j = 1,\ldots,n_i$ indiziert die Vogelart in der jeweiligen 
+        Nahrungsgruppe
+  \item $k = 1,2$ indiziert die Bucht (\{Uganik, Uyak\})
+  \item Der funktionale Parameter $\mu(t)$ bezeichnet den mittleren globalen 
+        Trend \"uber alle Vogelarten.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Das Modell}
+$$
+y_{ijk}(t) = \mu(t) + (-1)^{i} \alpha(t) + \beta_{ij}(t) + \varepsilon_{ijk}(t)
+$$
+\begin{itemize}  
+  \item Der Parameter $\alpha(t)$ bezeichnet den Trend \"uber die mittlere
+        Differenz zwischen den Krusten- bzw. Weichtier und den Fisch 
+        essenden Vogelarten
+  \item $\alpha(t)$ wird mit $1$ multipliziert, wenn die Beobachtung zu Krusten- 
+        bzw. Weichtier essenden Vogelart geh\"ort und mit $-1$ bei Fisch 
+        essenden 
+  \item Der Parameter $\beta_{ij}(t)$ bezeichnet den Trend f\"ur jede Vogelart,
+        welcher die Abweichungen von $\mu(t)$ darstellt, die zu einer der 
+        Nahrungsgruppen geh\"ort.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Das Modell}
+$$
+y_{ijk}(t) = \mu(t) + (-1)^{i} \alpha(t) + \beta_{ij}(t) + \varepsilon_{ijk}(t)
+$$
+\begin{itemize}  
+  \item Dies wird f\"ur alle $t$ erreicht durch die Nebenbedingungen
+        $$
+          \sum\limits_{j=1}^{n_1}\beta_{1j}(t) = 0 \textnormal{ und } 
+          \sum\limits_{j=1}^{n_2}\beta_{2j}(t) = 0
+        $$
+  \item Der Parameter $\varepsilon_{ijk}(t)$ bezeichnet die Residuen
+  \item Dies ergibt $28$ Gleichungen: $2$ Bl\"ocke der $13$ Vogelarten und die 
+        beiden Nebenbedingungen. 
+\end{itemize}
+\end{frame}
+
 
 \section{Linear Funktionales Modell mit Funktionaler Beobachtung}
 \begin{frame}[fragile]
