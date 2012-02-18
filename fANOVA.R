@@ -174,7 +174,7 @@ for(i in 1:20) {
     if (n > 0) {
       meanCountsij[meanCountsij == 0] <- 1/(2*n)
     }
-    meanCounts2[i,(j-1)*13+(1:13)] <- meanCountsij
+    meanCounts2[i, (j-1)*13+(1:13)] <- meanCountsij
   }
 }
 
@@ -207,35 +207,35 @@ birdfd2 <- birdlist2$fd
 
 Zmat0 <- matrix(0, 26, 15)
 
-#  Intercept or baseline effect
+#  \mu (t)
 
 Intercept <- rep(1, 26)
 
-#  Crustacean/Mollusc feeding effect:  a contrast between the two groups
+#  Nahrungseffekt:  
 
 foodindex <- c(1, 2, 5, 6, 12, 13)
 fooddummy <- c(2*rep(1:13 %in% foodindex, 2)-1)
 
-#  Bird effect, one for each species
+# Vogelarteffekt
 
 birddummy <- diag(rep(1,13))
 birdvarbl <- rbind(birddummy, birddummy)
 
-#  fill the columns of the design matrix
+#  Fülle die Design-Matrix
 
 Zmat0[ , 1] <- Intercept
 Zmat0[ , 2] <- fooddummy
 Zmat0[ , 3:15] <- birdvarbl
 
-#  Two extra dummy observations are added to the functional data
-#  object for log counts, and two additional rows are added to
-#  the design matrix to force the bird effects within each diet
-#  group to equal 0.
+#  Zwei dummy Beobachtungen werden zu den funktionalen Daten hinzugefügt
+#  zusätzliche Spalten werden in der Design-Matrix hinzugefügt, um die 
+#  Vogelarteneffekte auf die jeweilige Bucht zu beschränken um den Effekt
+#  innerhalb der Gruppe auf Null zu beschränken
 
 birdfd3 <- birdfd2
 birdfd3$coefs <- cbind(birdfd3$coefs, matrix(0, 19, 2))
 
-Zmat <- rbind(Zmat0, matrix(0,2,15))
+Zmat <- rbind(Zmat0, matrix(0, 2, 15))
 Zmat[27, shellfishindex+2] <- 1
 Zmat[28, fishindex+2] <- 1
 
@@ -264,30 +264,76 @@ for (j in 3:15) {
 birdRegress <- fRegress(birdfd3, xfdlist, betalist)
 betaestlist <- birdRegress$betaestlist
 
-# Figure 10.3 is produced in Section 10.2.2 below
-# after estimating the smoothing parameter in Section 10.1.3
-#
-# Here we plot the regression parameters
-# without the confidence intervals.
 
-op <- par(mfrow=c(2, 1))
-plot(betaestlist$const$fd)
-plot(betaestlist$diet$fd)
-par(op)
+betafdPar1$lambda <-  10^0.5
+for (j in 1:2) betalist[[j]] <-  betafdPar1
 
-loglam <- seq(-2, 4, 0.25)
-SSE.CV <- rep(0,length(loglam))
-betafdPari <- betafdPar1
-for(i in 1:length(loglam)) {
-  print(loglam[i])
-  betafdPari$lambda <- 10^loglam[i]
-  betalisti <- betalist
-  for (j in 1:2) {
-    betalisti[[j]] <- betafdPari
-  }
-  CVi <- fRegress.CV(birdfd3, xfdlist, betalisti, CVobs=1:26)
-  SSE.CV[i] <- CVi$SSE.CV
-}
+#  carry out the functional regression analysis
+fitShellfish.5 <- fRegress(birdfd3, xfdlist, betalist)
+birdYhatmat <- eval.fd(yearCode, fitShellfish.5$yhatfdobj$fd[1:26])
+rmatb <- logCounts2 - birdYhatmat
+SigmaEb <- var(t(rmatb))
 
-## @knitr GR_ANOVA
+y2cMap.bird <- birdlist2$y2cMap
+
+birdStderrList <- fRegress.stderr(fitShellfish.5, y2cMap.bird, SigmaEb)
+birdBeta.sdList <- birdStderrList$betastderrlist
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_ANOVA_mu
+mu <- eval.fd(yearCode, betaestlist$const$fd)
+sd <- eval.fd(yearCode, birdBeta.sdList[[1]]) 
+sd.lo <- mu-2*sd
+sd.up <- mu+2*sd
+regcoeffmu <- data.frame(year=yearObs,
+                         mu=mu,
+                         sd.lo=sd.lo,
+                         sd.up=sd.up)
+# warum auch immer der die namen ändert?
+theme_set(theme_bw())
+ggplot(regcoeffmu) +
+  geom_line(aes(x=year, y=mu), size=2) +
+  geom_line(aes(x=year, y=rep1), lty=2, size=2) +
+  geom_line(aes(x=year, y=rep1.1), lty=2, size=2) +
+  opts(legend.position="none", 
+       title="$\\mu(t)$",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 12),
+       axis.text.y= theme_text(size = 12),
+       plot.title=theme_text(size=18)) +
+  xlab("") + ylab("Reg. Koef.")
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_ANOVA_alpha
+alpha <- eval.fd(yearCode, betaestlist$diet$fd)
+sd <- eval.fd(yearCode, birdBeta.sdList[[2]])
+sd.lo <- alpha-2*sd
+sd.up <- alpha+2*sd
+regcoeffalpha <- data.frame(year=yearObs,
+                         alpha=alpha,
+                         sd.lo=sd.lo,
+                         sd.up=sd.up)
+
+# warum auch immer der die namen ändert?
+theme_set(theme_bw())
+ggplot(regcoeffalpha) +
+  geom_line(aes(x=year, y=alpha), size=2) +
+  geom_line(aes(x=year, y=rep1), lty=4, size=2) +
+  geom_line(aes(x=year, y=rep1.1), lty=4, size=2) +
+  geom_hline(aes(yintercept=0), lty=2, size=1) +
+  opts(legend.position="none", 
+       title="$\\alpha(t)$",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 12),
+       axis.text.y= theme_text(size = 12),
+       plot.title=theme_text(size=18)) +
+  xlab("") + ylab("Reg. Koef.")
 

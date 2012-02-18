@@ -50,7 +50,8 @@
 
 \title[ ]{Lineare Modelle für Funktionale Antwortvariablen}
 \date{22. Februar 2012}
-\institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ Universit\"at Stuttgart}
+\institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ 
+                Universit\"at Stuttgart}
 \author{Dr. Simon M\"uller}
 
 
@@ -86,37 +87,62 @@ require(RgoogleMaps)
 read_chunk('fANOVA.R')
 @
 
+%%%
+%
+%
+%%%
+
 \begin{frame}[fragile]
   \titlepage
   \thispagestyle{empty}
 \end{frame}
 
+%%%
+%
+%
+%%%
 
 \begin{frame}[fragile]
   \frametitle{Gliederung}
   \tableofcontents[section, hidesubsections]
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Funktionale Varianzanalyse
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Funktionale Varianzanalyse}
 \begin{frame}[fragile]
   \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
 \end{frame}
 
+%%%
+%
+%
+%%%
+
 \subsection{Datensatz: Vogelpopulation}
 \begin{frame}[fragile]
 \frametitle{Herkunft Datensatz}
   \begin{itemize}
-    \item Die Anzahl von $15$ Vogelarten wurde j\"ahrlich seit $1986$ im Winter in einer 
-    Reihe von Buchten und festen Gebieten auf den Kodiak Inseln (Alaska) von der \textit{Kodiak National Wildlife Refuge} gez\"ahlt.
+    \item Die Anzahl von $15$ Vogelarten wurde j\"ahrlich seit $1986$ im Winter 
+          in einer Reihe von Buchten und festen Gebieten auf den Kodiak Inseln 
+          (Alaska) von der \textit{Kodiak National Wildlife Refuge} gez\"ahlt.
     \item Im der nachfolgenden Analyse sind die Daten:
-      \begin{itemize}
-        \item auf die $2$ Buchten Uganik und Uyak beschr\"ankt und
-        \item es werden $13$ von den $15$ Vogelarten betrachtet.
-      \end{itemize}
+          \begin{itemize}
+            \item auf die $2$ Buchten Uganik und Uyak beschr\"ankt und
+            \item es werden $13$ von den $15$ Vogelarten betrachtet.
+          \end{itemize}
   \end{itemize}
 
 \end{frame} 
 
+%%%
+%
+%
+%%%
 
 \begin{frame}[fragile]
 \frametitle{Vogelpopulationen nach Ern\"ahrung}
@@ -126,8 +152,8 @@ read_chunk('fANOVA.R')
 % Führe Vorberechnungen für die Grafiken aus
 <<GR_DIET, echo=FALSE>>=
 @  
-\hspace{-0.1cm}   
-\begin{minipage}{0.48\textwidth}
+  \hspace{-0.1cm}   
+  \begin{minipage}{0.48\textwidth}
 <<GR_Krustentier, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
 @
   \end{minipage}
@@ -135,8 +161,13 @@ read_chunk('fANOVA.R')
   \begin{minipage}{0.48\textwidth} 
 <<GR_Fisch, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
 @
-\end{minipage}
+  \end{minipage}
 \end{frame}
+
+%%%
+%
+%
+%%%
 
 \subsection{fANOVA: Vogelpopulation}
 \begin{frame}[fragile]
@@ -148,14 +179,19 @@ read_chunk('fANOVA.R')
     \item Die Vogelarten wurden in $2$ Faktorstufen ($=$ 
           \{\textit{Krusten- bzw. Weichtiere}; \textit{Fische}\}) eingeteilt
     \begin{itemize}
-      \item Die Stichprobe zur FS \textit{Krustentiere} enth\"alt $n_1 = 6$ 
-            Elemente
-      \item Die Stichprobe zur FS \textit{Fische} enth\"alt $n_2 = 7$ Elemente
+          \item Die Stichprobe zur FS \textit{Krustentiere} enth\"alt $n_1 = 6$ 
+                Elemente
+          \item Die Stichprobe zur FS \textit{Fische} enth\"alt $n_2 = 7$ Elemente
     \end{itemize}
     \item Untersuchungszeitraum: $1986-2005$ (ohne $1998$) 
   \end{itemize}
 \end{frame}
 
+%%%
+%
+%
+%%%
+\subsection{fANOVA: Modell}
 \begin{frame}[fragile]
 \frametitle{Das Modell}
 Wir betrachten folgendes Modell:
@@ -172,6 +208,11 @@ $$
         Trend \"uber alle Vogelarten.
 \end{itemize}
 \end{frame}
+
+%%%
+%
+%
+%%%
 
 \begin{frame}[fragile]
 \frametitle{Das Modell}
@@ -191,6 +232,11 @@ $$
 \end{itemize}
 \end{frame}
 
+%%%
+%
+%
+%%%
+
 \begin{frame}[fragile]
 \frametitle{Das Modell}
 $$
@@ -208,6 +254,33 @@ $$
 \end{itemize}
 \end{frame}
 
+%%%
+%
+%
+%%%
+\subsection{fANOVA: Resultat}
+\begin{frame}[fragile]
+\frametitle{Resultat}
+% Führe fANOVA durch
+<<@knitr CA_fanova, echo=FALSE>>=
+@  
+  \hspace{-0.1cm}   
+  \begin{minipage}{0.48\textwidth}
+<<GR_ANOVA_mu, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage}
+  \hspace{0.1cm}
+  \begin{minipage}{0.48\textwidth} 
+<<GR_ANOVA_alpha, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Linear Funktionales Modell mit Funktionaler Beobachtung
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Linear Funktionales Modell mit Funktionaler Beobachtung}
 \begin{frame}[fragile]
