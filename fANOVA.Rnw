@@ -48,7 +48,7 @@
 \usepackage{color}
 \definecolor{grund}{gray}{.5} 
 
-\title[ ]{Lineare Modelle für Funktionale Antwortvariablen}
+\title[ ]{Lineare Modelle f\"ur Funktionale Antwortvariablen}
 \date{22. Februar 2012}
 \institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ 
                 Universit\"at Stuttgart}
@@ -65,7 +65,6 @@
 \definecolor{orange}{HTML}{E69F00}
 
 \begin{document}
-
 % Lade die benötigten R-Pakete
 <<setup,echo=FALSE,results=hide,cache=FALSE,message=FALSE>>=
 options(width = 90, replace.assign = TRUE)
@@ -75,9 +74,11 @@ knit_hooks$set(fig = function(before, options, envir){
             mgp = c(2, 0.7, 0), tcl = -0.3)
       } )
 require(fda)
+require(fds)
 require(ggplot2)
 require(reshape)
 require(RgoogleMaps)
+require(colorspace)
 @
 
 %\SweaveOpts{fig.path=figure/hw8-, cache.path=cache/hw8-, dev=tikz, external=TRUE, fig.width=7, fig.height=7, fig.align=center, cache=TRUE, fig.show=hold, background=1.0;1.0;1.0, par=TRUE}
@@ -109,6 +110,164 @@ read_chunk('fANOVA.R')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+% Einleitung
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Einleitung}
+\begin{frame}[fragile]
+  \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\subsection{Was sind funktionale Daten?}
+\begin{frame}[fragile]
+  \frametitle{Was sind funktionale Daten?}
+  \textbf{Beispiel:} NIR-Spektrum von Weizen, \\ 
+  $100$ Kurven mit jeweils $701$ Beobachtungen
+  \hspace{-0.1cm}   
+  \begin{minipage}{0.48\textwidth}
+<<GR_NIRspektrum, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage}
+  \hspace{0.1cm}
+  \begin{minipage}[c][][t]{0.48\textwidth}
+    Eigenschaften der Daten?
+    \begin{itemize}
+      \item<1-> Hohe Anzahl an Beobachtungen im Vgl. zur Stichprobengr\"o{\ss}e
+      \item<2-> \"Ahnlichkeit des Kurvenverlaufs, Daten sind collinear.
+      \item<3-> Glatte Daten, aber komplexer zugrundeliegender Prozess
+    \end{itemize}
+    \hfill
+  \end{minipage}
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\begin{frame}[fragile]
+  \frametitle{Was sind funktionale Daten?}
+  Im Allgemeinen geht man davon aus, dass 
+  $$
+    y_{ij} = x_i(t_{ij}) + \varepsilon_{ij},
+  $$
+  dabei sind die $t_{ij}$ diskrete Abtastungen einer kontinuierlichen Variable $t$
+  (Zeit, Frequenz, usw.) und $x_i(t)$ die funktionalen Daten.\\
+  \pause Daten erh\"alt man z.B. aus:
+  \begin{itemize}
+    \item Spektralen Messungen (z.B. Nahrungsmittelindustrie, Astronomie),
+    \item Elektrischen Messungen (z.B. EKG, EEG),
+    \item Audio-Messungen (z.B. Lungenger\"ausche, Sprache).
+  \end{itemize}
+  \pause Interpretation des Rauschens $\varepsilon_{ij}$ h\"angt von der Art der 
+  Daten ab.
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\begin{frame}[fragile]
+  \frametitle{Ausblick: Gl\"attung}
+  \hspace{-0.1cm} 
+<<CA_canada, echo=FALSE, results=hide>>=
+@
+  \begin{minipage}{0.48\textwidth}
+  Niederschlag in Vancouver
+<<GR_canada, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage}
+  \hspace{0.1cm}
+  \begin{minipage}{0.48\textwidth}
+  log-Periodogramm zum Laut \textit{aa}
+<<GR_speech, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage}
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\subsection{Woran sind wir interessiert?}
+\begin{frame}[fragile]
+  \frametitle{Woran sind wir interessiert?}
+  \begin{itemize}
+    \item<1-> Deskriptive Darstellung von Funktionen
+    \begin{itemize}
+      \item<1-> Erwartungswert, Median
+      \item<1-> Varianz
+      \item<1-> Covarianz
+    \end{itemize}
+    \item<2-> Beziehung funktionaler Daten zu
+    \begin{itemize}
+      \item<2-> Antwortvariablen (z.B. Fettgehalt, Wort)
+      \item<2-> Antwortfunktionen (z.B. Niederschlag pro Tag)
+      \item<2-> den anderen Beobachtungen (z.B. Sterblichkeitsraten)
+    \end{itemize}
+    \item<3-> Beziehung zu den Ableitungen der funktionalen Daten (z.B. Dynamik 
+              des Schreibens)
+    \item<4-> Zeitereignisse in den Funktionen (z.B. Registrierung 
+              Handschriftdaten)
+  \end{itemize}
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\subsection{Worin liegen die Herausforderungen?}
+\begin{frame}[fragile]
+  \frametitle{Worin liegen die Herausforderungen?}
+  \begin{itemize}
+    \item<1-> Sch\"atzung der funktionalen Daten $x_i(t)$ anhand diskreter und 
+              verrauschter Daten
+    \item<2-> Numerische Repr\"asentation unendlich-dimensionaler Objekte
+    \item<3-> Beschreibung statistischer Zusammenh\"ange zwischen unendlich-
+              dimensionalen Objekten
+    \item<4-> Darstellung der Variation in unendlich-dimensionalen R\"aumen
+    \item<5-> Kleine Stichprobe $n$, hohe Dimension $p=\infty$ (Fluch der   
+              Dimensionen)\\
+    Sei $\lambda$ das Lebesgue-Ma{\ss} auf $(I=[0,1]^p, \mathcal{B}(I))$, dann 
+  	$$\lambda(I) = 1 \textnormal{ und }\lambda(K) = \frac{1}{2^{p}} \dfrac{\pi^{p/2}}{\Gamma(p/2)}$$
+  \end{itemize}
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\subsection{Referenzen}
+\begin{frame}[fragile]
+\frametitle{Referenzen (alle von Springer)}
+  Parametrische funktionale Datenanalyse:  
+  \begin{itemize}
+    \item Ramsay, Hooker, and Graves, \textit{Functional Data Analysis
+          with R and MATLAB}, 2009
+    \item Ramsay and Silverman, \textit{Functional Data Analysis}, 2005
+    \item Ramsay and Silverman, \textit{Applied Functional Data Analysis}, 
+          2002
+  \end{itemize}
+  \pause Nichtparametrische funktionale Datenanalyse:
+  \begin{itemize}
+    \item Ferraty and Vieu, \textit{Nonparametric Functional Data Analysis}, 
+          2007
+  \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Funktionale Varianzanalyse
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -125,18 +284,27 @@ read_chunk('fANOVA.R')
 
 \subsection{Datensatz: Vogelpopulation}
 \begin{frame}[fragile]
-\frametitle{Herkunft Datensatz}
-  \begin{itemize}
-    \item Die Anzahl von $15$ Vogelarten wurde j\"ahrlich seit $1986$ im Winter 
-          in einer Reihe von Buchten und festen Gebieten auf den Kodiak Inseln 
-          (Alaska) von der \textit{Kodiak National Wildlife Refuge} gez\"ahlt.
-    \item Im der nachfolgenden Analyse sind die Daten:
-          \begin{itemize}
-            \item auf die $2$ Buchten Uganik und Uyak beschr\"ankt und
-            \item es werden $13$ von den $15$ Vogelarten betrachtet.
-          \end{itemize}
-  \end{itemize}
-
+\frametitle{Datensatz: Vogelpopulation}
+% Hole Karte
+<<@knitr GR_kodiak, echo=FALSE>>=
+@
+  \begin{minipage}{0.48\textwidth}
+    \includegraphics[width = 1.1\linewidth, height = 1.1\linewidth]{kodiak_insel.png}
+  \end{minipage} 
+  \hspace{0.1cm}
+  \begin{minipage}{0.48\textwidth}
+    \begin{itemize}
+      \item<1-> Die Anzahl von $15$ Vogelarten wurde j\"ahrlich seit $1986$ im 
+                Winter in einer Reihe von Buchten und festen Gebieten auf den 
+                Kodiak Inseln (Alaska) von der \textit{Kodiak National Wildlife 
+                Refuge} gez\"ahlt.
+      \item<2-> In der nachfolgenden Analyse sind die Daten
+                \begin{itemize}
+                  \item auf die $2$ Buchten Uganik und Uyak beschr\"ankt und
+                  \item es werden $13$ von den $15$ Vogelarten betrachtet.
+                \end{itemize}
+    \end{itemize}
+  \end{minipage}
 \end{frame} 
 
 %%%
@@ -145,9 +313,9 @@ read_chunk('fANOVA.R')
 %%%
 
 \begin{frame}[fragile]
-\frametitle{Vogelpopulationen nach Ern\"ahrung}
+\frametitle{Fragestellung}
   \textbf{Fragestellung: } \\
-  Es soll untersucht werden, ob und welchen Einflu{\ss} die Ern\"ahrung
+  Es soll untersucht werden, ob und welchen Einfluss die Ern\"ahrung
   auf die Population der Vogelarten hat.
 % Führe Vorberechnungen für die Grafiken aus
 <<CA_diet, echo=FALSE>>=
@@ -169,21 +337,20 @@ read_chunk('fANOVA.R')
 %
 %%%
 
-\subsection{fANOVA: Vogelpopulation}
 \begin{frame}[fragile]
-\frametitle{Formalisierung}
+\frametitle{Beschreibung}
   \begin{itemize}
-    \item Wir analysieren den Einflu{\ss} der Ern\"ahrung auf den zeitlichen 
-          Trend der logarithmierten gemittelten Anzahl von V\"ogeln pro Art, 
-          wobei der Faktor Vogelart in den Faktor Ern\"ahrung geschachtelt ist.
-    \item Die Vogelarten wurden in $2$ Faktorstufen ($=$ 
+    \item<1-> Es wird der Einfluss der Ern\"ahrung auf den zeitlichen 
+          Trend der logarithmierten gemittelten Anzahl von V\"ogeln analysiert. 
+    %\item<2-> Gez\"ahlt wurde in festgelegten Gebieten in jeder Bucht.
+    \item<2-> Die Vogelarten werden in $2$ Faktorstufen ($=$ 
           \{\textit{Krusten- bzw. Weichtiere}; \textit{Fische}\}) eingeteilt
     \begin{itemize}
-          \item Die Stichprobe zur FS \textit{Krustentiere} enth\"alt $n_1 = 6$ 
+          \item<2-> Die Stichprobe zur FS \textit{Krustentiere} enth\"alt $n_1 = 6$ 
                 Elemente
-          \item Die Stichprobe zur FS \textit{Fische} enth\"alt $n_2 = 7$ Elemente
+          \item<2-> Die Stichprobe zur FS \textit{Fische} enth\"alt $n_2 = 7$ Elemente
     \end{itemize}
-    \item Untersuchungszeitraum: $1986-2005$ (ohne $1998$) 
+    \item<3-> Zeitraum: $1986-2005$ (ohne $1998$) 
   \end{itemize}
 \end{frame}
 
@@ -191,7 +358,7 @@ read_chunk('fANOVA.R')
 %
 %
 %%%
-\subsection{fANOVA: Modell}
+\subsection{Das Modell}
 \begin{frame}[fragile]
 \frametitle{Das Modell}
 Wir betrachten folgendes Modell:
@@ -199,12 +366,11 @@ $$
 y_{ijk}(t) = \mu(t) + (-1)^{i} \alpha(t) + \beta_{ij}(t) + \varepsilon_{ijk}(t)
 $$
 \begin{itemize} 
-  \item $i=1,2$ inidiziert die Nahrungsquelle ($=\{$Krusten- bzw. Weichtier, 
-        Fisch$\}$)
-  \item $j = 1,\ldots,n_i$ indiziert die Vogelart in der jeweiligen 
+  \item<1-> $i=1,2$ indiziert die Nahrungsquelle
+  \item<2-> $j = 1,\ldots,n_i$ indiziert die Vogelart in der jeweiligen 
         Nahrungsgruppe
-  \item $k = 1,2$ indiziert die Bucht (\{Uganik, Uyak\})
-  \item Der funktionale Parameter $\mu(t)$ bezeichnet den mittleren globalen 
+  \item<3-> $k = 1,2$ indiziert die Bucht
+  \item<4-> Der funktionale Parameter $\mu(t)$ bezeichnet den mittleren globalen 
         Trend \"uber alle Vogelarten.
 \end{itemize}
 \end{frame}
@@ -216,19 +382,20 @@ $$
 
 \begin{frame}[fragile]
 \frametitle{Das Modell}
+Wir betrachten folgendes Modell:
 $$
 y_{ijk}(t) = \mu(t) + (-1)^{i} \alpha(t) + \beta_{ij}(t) + \varepsilon_{ijk}(t)
 $$
 \begin{itemize}  
-  \item Der Parameter $\alpha(t)$ bezeichnet den Trend \"uber die mittlere
+  \item<1-> Der Parameter $\alpha(t)$ bezeichnet den Trend \"uber die mittlere
         Differenz zwischen den Krusten- bzw. Weichtier und den Fisch 
-        essenden Vogelarten
-  \item $\alpha(t)$ wird mit $1$ multipliziert, wenn die Beobachtung zu Krusten- 
-        bzw. Weichtier essenden Vogelart geh\"ort und mit $-1$ bei Fisch 
-        essenden 
-  \item Der Parameter $\beta_{ij}(t)$ bezeichnet den Trend f\"ur jede Vogelart,
-        welcher die Abweichungen von $\mu(t)$ darstellt, die zu einer der 
-        Nahrungsgruppen geh\"ort.
+        essenden Vogelarten.
+  \item<2-> $\alpha(t)$ wird mit $1$ multipliziert, wenn die Beobachtung zu einer Krusten- 
+        bzw. Weichtier essenden Vogelart geh\"ort und mit $-1$ bei einer Fisch 
+        essenden.
+  \item<3-> Der Parameter $\beta_{ij}(t)$ bezeichnet den Trend, welcher die 
+            Abweichungen von $\mu(t)$ darstellt, f\"ur jede Vogelart, die zu einer der 
+            Nahrungsgruppen geh\"ort.
 \end{itemize}
 \end{frame}
 
@@ -243,13 +410,14 @@ $$
 y_{ijk}(t) = \mu(t) + (-1)^{i} \alpha(t) + \beta_{ij}(t) + \varepsilon_{ijk}(t)
 $$
 \begin{itemize}  
-  \item Dies wird f\"ur alle $t$ erreicht durch die Nebenbedingungen
+  \item<1-> Dies wird f\"ur alle $t$ erreicht durch die Nebenbedingungen
         $$
           \sum\limits_{j=1}^{n_1}\beta_{1j}(t) = 0 \textnormal{ und } 
-          \sum\limits_{j=1}^{n_2}\beta_{2j}(t) = 0
+          \sum\limits_{j=1}^{n_2}\beta_{2j}(t) = 0.
         $$
-  \item Der Parameter $\varepsilon_{ijk}(t)$ bezeichnet die Residuen
-  \item Dies ergibt $28$ Gleichungen: $2$ Bl\"ocke der $13$ Vogelarten und die 
+  \item<2-> Der Parameter $\varepsilon_{ijk}(t)$ bezeichnet die Residuen.
+  \item<3-> Keine Einfluss: Bucht und der Interaktion von Bucht $*$ Nahrung
+  \item<4-> Dies ergibt $28$ Gleichungen: $2$ Bl\"ocke der $13$ Vogelarten und die 
         beiden Nebenbedingungen. 
 \end{itemize}
 \end{frame}
@@ -259,7 +427,7 @@ $$
 %
 %%%
 
-\subsection{fANOVA: Resultat}
+\subsection{Resultat}
 \begin{frame}[fragile]
 \frametitle{Resultat}
 % Führe fANOVA durch
@@ -267,19 +435,15 @@ $$
 @  
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
-    \begin{center}
-      zeitlicher Trend $\mu(t)$ \"uber alle Vogelarten und Nahrungsquelle
+      Zeitlicher Trend $\mu(t)$ \"uber alle Vogelarten und Nahrungsquellen
 <<GR_ANOVA_mu, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
 @
-    \end{center}
   \end{minipage} 
   \hspace{0.1cm}
   \begin{minipage}{0.48\textwidth}
-  \begin{center}
-      zeitlicher Trend $\alpha(t)$ \"uber mittlere Differenz 
+  Zeitlicher Trend $\alpha(t)$ \"uber die mittlere Differenz 
 <<GR_ANOVA_alpha, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
 @
-  \end{center}
   \end{minipage}
 \end{frame}
 
@@ -289,9 +453,36 @@ $$
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Linear Funktionales Modell mit Funktionaler Beobachtung}
+
+\section{Lineares Funktionales Modell mit Funktionaler Beobachtung}
 \begin{frame}[fragile]
   \frametitle{Gliederung}\tableofcontents[currentsection, subsection]
+\end{frame}
+
+%%%
+% 
+%
+%%%
+
+\subsection{Datensatz: Sterblichkeitsraten schwedischer Frauen}
+\begin{frame}[fragile]
+\frametitle{Datensatz: Sterblichkeitsraten schwedischer Frauen}
+<<CA_mort, echo=FALSE, results=hide>>=
+@  
+  \hspace{-0.1cm}   
+  \begin{minipage}{0.48\textwidth}
+<<GR_bspmort, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage} 
+  \hspace{0.1cm}
+  \begin{minipage}{0.48\textwidth}
+    \begin{itemize}
+      \item<1-> Logarithmierte Hazardrate schwedischer Frauen im Alter von $0$ bis
+            $80$ Jahren.
+      \item<2-> Berechnet aus Daten von: \url{www.mortality.org} 
+      \item<3-> Zeitraum Datensatz: $1757$ -- $1900$
+    \end{itemize}
+  \end{minipage}
 \end{frame}
 
 %%%
@@ -299,14 +490,117 @@ $$
 %
 %%%
 
-\section{}
 \begin{frame}[fragile]
+\frametitle{Datensatz: Sterblichkeitsraten schwedischer Frauen}
+<<CA_mort, echo=FALSE, results=hide>>=
+@  
+  \hspace{-0.1cm}   
+  \begin{minipage}{0.48\textwidth}
+<<GR_bspmort, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage} 
+  \hspace{0.1cm}
+  \begin{minipage}{0.48\textwidth}
+    Sterbewahrscheinlichkeit ist
+    \begin{itemize}
+      \item<1-> im S\"auglingsalter besonders hoch,
+      \item<2-> hat ein Minimum im Teenageralter
+      \item<3-> und nimmt mit dem Alter zu.
+      \item<4-> Mit zunehmender Gesundheit nimmt die Sterbewahrscheinlichkeit ab.
+      \item<5-> Lokale Ausschl\"age entsprechen z.B. Kriegen, Krankheiten, usw.
+    \end{itemize}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Datensatz: Sterblichkeitsraten schwedischer Frauen}
+<<CA_mort, echo=FALSE, results=hide>>=
+@  
+  \hspace{-0.1cm}   
+  \begin{minipage}{0.48\textwidth}
+<<GR_bspmort, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage} 
+  \hspace{0.1cm}
+  \begin{minipage}{0.48\textwidth}
+<<GR_res_org, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage}
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\subsection{Das Modell}
+\begin{frame}[fragile]
+\frametitle{Das Modell}
+  Wir passen folgendes Auto-regressives Modell an die Daten an: 
   $$
-    x_{i+1} = \beta_0(t) + \int x_i(s) \beta_1(s, t)ds + \varepsilon_i(t)
+    x_{i+1}(t) = \beta_0(t) + \int_{\Omega_t} x_i(s) \beta_1(s, t)ds + \varepsilon_i(t)
   $$
   \begin{itemize}
-    \item $x_i(t)$ logarithmierte Sterblichkeitsrate f\"ur die Jahre 
-          $i = 1751, \ldots, 2010$ zum Alter $t\in [0, 80]$
+    \item<1-> $x_i(t)$ logarithmierte Hazardrate f\"ur die Jahre 
+          $i = 1757, \ldots, 1900$ zum Alter $t\in [0, 80]$
+    \item<2-> Integrationsgebiet $\Omega_t = [0, 80]$
+    \item<3-> $\varepsilon_i(t)$ Rauschen
+  \end{itemize}
+\end{frame}
+
+%%%
+%
+%
+%%%
+
+\subsection{Resultat}
+\begin{frame}[fragile]
+\frametitle{Resultat}
+  \begin{minipage}{0.48\textwidth}
+<<GR_res, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+@
+  \end{minipage} 
+  \hspace{0.1cm}
+  \begin{minipage}{0.48\textwidth}
+    \begin{itemize}
+    \item $\beta_{0}(t) \approx 0$
+    \item $x_{i+1}(t) \approx \int x_i(s) \beta_1(s, t)ds$ 
+    \item Die Koeffizienten haben einen Einfluss auf der Diagonalen,
+    $\beta_1(s-1, s)$
+    \item Sterblichkeitsrate steht in Beziehung zur Sterblichkeitsrate ein vom 
+    vorigen Jahr Minus einem Jahr
+ \end{itemize}
+  \end{minipage}
+\end{frame}
+ 
+  
+%  Originaldaten
+%<<GR_res_org, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+%@
+%%%
+%
+%
+%%%
+
+\section{Eigene Forschung}
+\begin{frame}[fragile]
+\frametitle{Eigene bisherige Forschung}
+  \begin{itemize}
+    \item<1-> Nichtparametrische Regression:
+    $
+      Y = m(X) + \varepsilon
+    $
+    \begin{itemize}
+      \item<1-> f\"ur funktionale und 
+      \item<1-> $\alpha$-mischende Daten.
+      \item<1-> Sch\"atzer: Nadaray-Watson Kernsch\"atzer
+    \end{itemize}
+    \item<2-> Bandweitenwahl
+    \begin{itemize}
+      \item<2-> k-N\"achste Nachbarn Kernsch\"atzer
+      \item<2-> Bootstrapping
+    \end{itemize}
+    \item<3-> Gleichm\"a{\ss}ige Konvergenzaussagen
   \end{itemize}
 \end{frame}
 
@@ -321,4 +615,5 @@ $$
 		\Huge{\textbf{Vielen Dank f\"ur Ihre Aufmerksamkeit!}}
 	\end{center}
 \end{frame}
+
 \end{document}

@@ -1,3 +1,93 @@
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_NIRspektrum
+data(Moisturespectrum) 
+set.seed(1)
+ind <- sample(1:100, 5)
+fat.y <- Moisturespectrum$y[ , ind]
+fat.df <- as.data.frame(fat.y)
+fat.df$x <- Moisturespectrum$x
+fat.df <- melt(fat.df, id="x")
+
+colours <- rainbow_hcl(5, start=30, end=300)
+theme_set(theme_bw())
+ggplot(fat.df) + 
+  geom_point(aes(x=x, y=value, group=variable, col=variable), size=2) +
+  scale_color_manual("", values=colours) +
+  xlab("") + ylab("") +
+  opts(legend.position="none",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 16),
+       axis.text.y= theme_text(size = 16))
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr CA_canada
+smallbasis  <- create.fourier.basis(c(0, 365), 65)
+harmaccelLfd365 <- vec2Lfd(c(0,(2*pi/365)^2,0), c(0, 365))
+index <- (1:35)[CanadianWeather$place == "Vancouver"]
+
+VanPrec <- CanadianWeather$dailyAv[ , index, "Precipitation.mm"]
+lambda <- 1e4
+dayfdPar <- fdPar(smallbasis, harmaccelLfd365, lambda)
+sm <- smooth.pos(day.5, VanPrec, dayfdPar)
+VanPrecPosFit1 <- eval.posfd(day.5, sm$Wfdobj)
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_canada
+
+temp.df <- data.frame(x=rep(1:365, 2), 
+                      y=c(VanPrec, VanPrecPosFit1), 
+                      id=rep(c("1", "2"), each=365))
+
+theme_set(theme_bw())
+ggplot() + 
+  geom_point(aes(x=x, y=y), data=subset(temp.df, id=="1"),
+             size=2, col="RoyalBlue") +
+  geom_line(aes(x=x, y=y), data=subset(temp.df, id=="2"),
+            size=2, col="Maroon") +
+  xlab("") + ylab("") +
+  opts(legend.position="none",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 16),
+       axis.text.y= theme_text(size = 16))
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_speech
+data(aa) 
+set.seed(123)
+ind <- sample(1:150, 1)
+speech.y <- aa$y[ , ind]
+speech.df <- as.data.frame(speech.y)
+speech.df$x <- aa$x
+speech.df <- melt(speech.df, id="x")
+
+theme_set(theme_bw())
+ggplot(speech.df) + 
+  geom_line(aes(x=x, y=value, group=variable), size=2, col="RoyalBlue") +
+  xlab("") + ylab("") +
+  opts(legend.position="none",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 16),
+       axis.text.y= theme_text(size = 16))
+
+################################################################################
+################################################################################
+################################################################################
+
 ###
 #
 # R-Code zum Vortrag fANOVA
@@ -147,6 +237,13 @@ ggplot(meltlogCounts) +
 ################################################################################
 ################################################################################
 ################################################################################
+
+## @knitr GR_kodiak
+map <- GetMap(center = c(57.486308980380834,-153.396606445312),
+              zoom=4, 
+              markers = "&markers=color:blue|label:K|57.486308980380834,-153.396606445312",
+              destfile = "kodiak_insel.png", maptype="terrain");
+
 
 ## @knitr CA_fANOVA
 
@@ -336,5 +433,165 @@ ggplot(regcoeffalpha) +
        axis.title.x = theme_text(size = 12, vjust=0),
        axis.text.x = theme_text(size = 16),
        axis.text.y= theme_text(size = 16)) +
-         xlab("") + ylab("")
+  xlab("") + ylab("")
+
+
+################################################################################
+################################################################################
+################################################################################
+
+################################################################################
+################################################################################
+################################################################################
+
+################################################################################
+################################################################################
+################################################################################
+
+
+###
+#
+# R-Code zum Vortrag functional Response with functional Predictors
+#
+# Code übernommen von Ramsay und Silverman: 
+# http://ego.psych.mcgill.ca/misc/fda/downloads/FDAfuns/R/inst/scripts/fdarm-ch10.R
+# mit Änderungen bei der Grafik
+#
+# Das Ganze ist aufgeteilt nach knitr-Abschnitten
+#
+###
+
+################################################################################
+################################################################################
+################################################################################
+
+#  The Swedish mortality data are proprietary, and therefore we do not
+#  provide them with the fda package.  In order to use the following
+#  code for their analysis, you must first obtain the data.  The following
+#  details are provided to help you to obtain them.
+
+#  Mortality data for 37 countries can be obtained from the 
+#  Human Mortality Database (http://www.mortality.org/). 
+#  For example, the Swedish mortality data can be found at 
+#  (http://www.mortality.org/cgi-bin/hmd/country.php?cntr=SWE&level=1).
+
+#  Citation:
+
+#  Human Mortality Database. University of California, Berkeley (USA), 
+#  and Max Planck Institute for Demographic Research (Germany). 
+
+#   Two data objects are required for these analyses:
+
+#  SwedeMat:  a dataframe object with 81 rows and 144 columns
+#             containing the log hazard values for ages 0 through 80
+#             and years 1751 through 1884
+#  Swede1920: a vector object containing log hazard values for 1914
+
+#  Han Lin Shang at Monash University in Australia has kindly provided
+#  the following R function to assist you.  It requires a username and
+#  password for accessing the data, which you must obtain from the above
+#  web site.
+
+## @knitr CA_mort
+# Lade Daten
+load("Sweden.Rdata")
+SwedeLogHazard <- as.matrix(SwedeMat)
+dimnames(SwedeLogHazard)[[2]] <- paste(1751:1894, sep='')
+
+fig.dat <- cbind(SwedeLogHazard[, c('1751', '1810', '1860')], Swede1920)
+
+SwedeTime <- 0:80;
+
+rangval <- c(0,80)
+nbasis <- 23
+SwedeRng <- c(0,80)
+norder <- 4
+SwedeBasis <- create.bspline.basis(SwedeRng, nbasis, norder)
+bbasis <- create.bspline.basis(rangval, norder=4, nbasis=23)
+D2fdPar <- fdPar(SwedeBasis, Lfdobj=2, lambda=0.01)
+
+SwedeLog20fd <- smooth.basis(SwedeTime, Swede1920, D2fdPar)$fd
+SwedeLogHazfd <- smooth.basis(SwedeTime, SwedeLogHazard, D2fdPar)$fd
+
+# Set up for the list of regression coefficient fdPar objects
+nbasis <- 23
+SwedeRng <- c(0,80)
+SwedeBetaBasis <- create.bspline.basis(SwedeRng, nbasis)
+SwedeBeta0Par <- fdPar(SwedeBetaBasis, 2, 1e-5)
+SwedeBeta1fd <- bifd(matrix(6,23,23), SwedeBetaBasis, SwedeBetaBasis)
+SwedeBeta1Par <- bifdPar(SwedeBeta1fd, 2, 2, 1e-3, 1e-3)
+SwedeBetaList <- list(SwedeBeta0Par, SwedeBeta1Par)
+
+#  Define the dependent and independent variable objects
+NextYear <- SwedeLogHazfd[2:144]
+LastYear <- SwedeLogHazfd[1:143]
+
+Swede.linmod <- linmod(NextYear, LastYear, SwedeBetaList)
+#plot(Swede.linmod$beta0estfd)
+
+#persp(Swede.ages, Swede.ages, Swede.beta1mat, 
+#      xlab="age", ylab="age",zlab="beta(s,t)",
+#      theta=30, phi=30)
+
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_bspmort
+fig.df <- as.data.frame(fig.dat)
+fig.df$year <- SwedeTime
+fig.df <- melt(fig.df, id="year")
+levels(fig.df$variable) <- c(levels(fig.df$variable)[1:3], "1920")
+colours <- rainbow_hcl(4, start = 30, end = 300)
+theme_set(theme_bw())
+ggplot(fig.df) + 
+  geom_line(aes(x=year, y=value, group=variable, col=variable), size=2) +
+  scale_color_manual("", values=colours) +
+  xlab("") + ylab("") +
+  opts(legend.text = theme_text(size=16),
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 16),
+       axis.text.y= theme_text(size = 16))
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_res
+Swede.ages <- seq(0, 80, 1)
+Swede.beta1mat <- eval.bifd(Swede.ages, Swede.ages, Swede.linmod$beta1estbifd)
+dff <- data.frame(x1=Swede.ages,
+                  val=Swede.beta1mat)
+dff <- melt(dff, id="x1")
+dff$x2 <- rep(0:80, each=81)
+theme_set(theme_bw())
+ggplot(dff) + stat_contour(aes(x1, x2, z=value, colour = ..level..), bins=50) +
+  xlab("s") + ylab("t") +
+  opts(legend.position="none",
+       axis.title.y = theme_text(size = 16, angle=90), 
+       axis.title.x = theme_text(size = 16, vjust=0),
+       axis.text.x = theme_text(size = 16),
+       axis.text.y= theme_text(size = 16))
+
+################################################################################
+################################################################################
+################################################################################
+
+## @knitr GR_res_org
+Swede.ages <- seq(0, 80, 1)
+dff <- data.frame(x1=Swede.ages,
+                  val=SwedeLogHazard)
+dff <- melt(dff, id="x1")
+dff$x2 <- rep(1757:1900, each=81)
+theme_set(theme_bw())
+ggplot(dff) + 
+  stat_contour(aes(x1, x2, z=value, colour = ..level..), bins=17) +
+  xlab("") + ylab("") +
+  opts(legend.position="none",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 16),
+       axis.text.y= theme_text(size = 16))
 
