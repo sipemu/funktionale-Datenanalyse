@@ -546,7 +546,6 @@ y2cMap.bird <- birdlist2$y2cMap
 
 birdStderrList <- fRegress.stderr(fitShellfish.5, y2cMap.bird, SigmaEb)
 birdBeta.sdList <- birdStderrList$betastderrlist
->>>>>>> 83c75652f9b3d7672759fe61749e65be9b384124
 
 ################################################################################
 ################################################################################
