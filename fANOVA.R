@@ -361,7 +361,6 @@ for (j in 3:15) {
 birdRegress <- fRegress(birdfd3, xfdlist, betalist)
 betaestlist <- birdRegress$betaestlist
 
-
 betafdPar1$lambda <-  10^0.5
 for (j in 1:2) betalist[[j]] <-  betafdPar1
 
@@ -534,6 +533,21 @@ Swede.linmod <- linmod(NextYear, LastYear, SwedeBetaList)
 #      theta=30, phi=30)
 
 
+betafdPar1$lambda <-  10^0.5
+for (j in 1:2) betalist[[j]] <-  betafdPar1
+
+#  carry out the functional regression analysis
+fitShellfish.5 <- fRegress(birdfd3, xfdlist, betalist)
+birdYhatmat <- eval.fd(yearCode, fitShellfish.5$yhatfdobj$fd[1:26])
+rmatb <- logCounts2 - birdYhatmat
+SigmaEb <- var(t(rmatb))
+
+y2cMap.bird <- birdlist2$y2cMap
+
+birdStderrList <- fRegress.stderr(fitShellfish.5, y2cMap.bird, SigmaEb)
+birdBeta.sdList <- birdStderrList$betastderrlist
+>>>>>>> 83c75652f9b3d7672759fe61749e65be9b384124
+
 ################################################################################
 ################################################################################
 ################################################################################
@@ -575,6 +589,31 @@ ggplot(dff) + stat_contour(aes(x1, x2, z=value, colour = ..level..), bins=50) +
        axis.text.x = theme_text(size = 16),
        axis.text.y= theme_text(size = 16))
 
+
+## @knitr GR_ANOVA_mu
+mu <- eval.fd(yearCode, betaestlist$const$fd)
+sd <- eval.fd(yearCode, birdBeta.sdList[[1]]) 
+sd.lo <- mu-2*sd
+sd.up <- mu+2*sd
+regcoeffmu <- data.frame(year=yearObs,
+                         mu=mu,
+                         sd.lo=sd.lo,
+                         sd.up=sd.up)
+# warum auch immer der die namen ändert?
+theme_set(theme_bw())
+ggplot(regcoeffmu) +
+  geom_line(aes(x=year, y=mu), size=2) +
+  geom_line(aes(x=year, y=rep1), lty=2, size=2) +
+  geom_line(aes(x=year, y=rep1.1), lty=2, size=2) +
+  opts(legend.position="none", 
+       title="$\\mu(t)$",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 12),
+       axis.text.y= theme_text(size = 12),
+       plot.title=theme_text(size=18)) +
+  xlab("") + ylab("Reg. Koef.")
+
 ################################################################################
 ################################################################################
 ################################################################################
@@ -594,4 +633,31 @@ ggplot(dff) +
        axis.title.x = theme_text(size = 12, vjust=0),
        axis.text.x = theme_text(size = 16),
        axis.text.y= theme_text(size = 16))
+
+
+## @knitr GR_ANOVA_alpha
+alpha <- eval.fd(yearCode, betaestlist$diet$fd)
+sd <- eval.fd(yearCode, birdBeta.sdList[[2]])
+sd.lo <- alpha-2*sd
+sd.up <- alpha+2*sd
+regcoeffalpha <- data.frame(year=yearObs,
+                         alpha=alpha,
+                         sd.lo=sd.lo,
+                         sd.up=sd.up)
+
+# warum auch immer der die namen ändert?
+theme_set(theme_bw())
+ggplot(regcoeffalpha) +
+  geom_line(aes(x=year, y=alpha), size=2) +
+  geom_line(aes(x=year, y=rep1), lty=4, size=2) +
+  geom_line(aes(x=year, y=rep1.1), lty=4, size=2) +
+  geom_hline(aes(yintercept=0), lty=2, size=1) +
+  opts(legend.position="none", 
+       title="$\\alpha(t)$",
+       axis.title.y = theme_text(size = 12, angle=90), 
+       axis.title.x = theme_text(size = 12, vjust=0),
+       axis.text.x = theme_text(size = 12),
+       axis.text.y= theme_text(size = 12),
+       plot.title=theme_text(size=18)) +
+  xlab("") + ylab("Reg. Koef.")
 

@@ -131,7 +131,7 @@ read_chunk('fANOVA.R')
   $100$ Kurven mit jeweils $701$ Beobachtungen
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
-<<GR_NIRspektrum, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+GR_NIRspektrum, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
 @
   \end{minipage}
   \hspace{0.1cm}
@@ -452,7 +452,6 @@ $$
 % Linear Funktionales Modell mit Funktionaler Beobachtung
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 \section{Lineares Funktionales Modell mit Funktionaler Beobachtung}
 \begin{frame}[fragile]
