@@ -65,11 +65,15 @@
 \definecolor{orange}{HTML}{E69F00}
 
 \begin{document}
+
+\SweaveOpts{fig.path='figure/graphics-', cache.path='cache/graphics-', fig.align='center', dev='tikz', fig.width=5, fig.height=5, fig.show='hold', cache=TRUE, par=TRUE}
+
+
 % Lade die benötigten R-Pakete
-<<setup,echo=FALSE,results=hide,cache=FALSE,message=FALSE>>=
+<<setup,echo=FALSE,results='hide',cache=FALSE,message=FALSE>>=
 options(width = 90, replace.assign = TRUE)
 knit_hooks$set(fig = function(before, options, envir){
-    if(before && options$fig.show != "none")
+    if(before && options$out.show != "none")
         par(mar = c(4, 4, 0.1, 0.1), cex.lab = 0.95, cex.axis = 0.9,
             mgp = c(2, 0.7, 0), tcl = -0.3)
       } )
@@ -81,8 +85,6 @@ require(RgoogleMaps)
 require(colorspace)
 @
 
-%\SweaveOpts{fig.path=figure/hw8-, cache.path=cache/hw8-, dev=tikz, external=TRUE, fig.width=7, fig.height=7, fig.align=center, cache=TRUE, fig.show=hold, background=1.0;1.0;1.0, par=TRUE}
- 
 % Lade den R-Code
 <<external-code, cache=FALSE, echo=FALSE>>=
 read_chunk('fANOVA.R')
@@ -131,7 +133,7 @@ read_chunk('fANOVA.R')
   $100$ Kurven mit jeweils $701$ Beobachtungen
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
-<<GR_NIRspektrum, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_NIRspektrum, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage}
   \hspace{0.1cm}
@@ -177,17 +179,17 @@ read_chunk('fANOVA.R')
 \begin{frame}[fragile]
   \frametitle{Ausblick: Gl\"attung}
   \hspace{-0.1cm} 
-<<CA_canada, echo=FALSE, results=hide>>=
+<<CA_canada, echo=FALSE, results='hide'>>=
 @
   \begin{minipage}{0.48\textwidth}
   Niederschlag in Vancouver
-<<GR_canada, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_canada, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage}
   \hspace{0.1cm}
   \begin{minipage}{0.48\textwidth}
   log-Periodogramm zum Laut \textit{aa}
-<<GR_speech, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_speech, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage}
 \end{frame}
@@ -290,7 +292,7 @@ read_chunk('fANOVA.R')
 <<@knitr GR_kodiak, echo=FALSE>>=
 @
   \begin{minipage}{0.48\textwidth}
-    \includegraphics[width = 1.1\linewidth, height = 1.1\linewidth]{kodiak_insel.png}
+    \includegraphics[width = 1.\linewidth, height = 1.\linewidth]{kodiak_insel.png}
   \end{minipage} 
   \hspace{0.1cm}
   \begin{minipage}{0.48\textwidth}
@@ -315,7 +317,6 @@ read_chunk('fANOVA.R')
 
 \begin{frame}[fragile]
 \frametitle{Fragestellung}
-  \textbf{Fragestellung: } \\
   Es soll untersucht werden, ob und welchen Einfluss die Ern\"ahrung
   auf die Population der Vogelarten hat.
 % Führe Vorberechnungen für die Grafiken aus
@@ -323,12 +324,12 @@ read_chunk('fANOVA.R')
 @  
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
-<<GR_Krustentier, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_Krustentier, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage}
   \hspace{0.1cm}
   \begin{minipage}{0.48\textwidth} 
-<<GR_Fisch, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_Fisch, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage}
 \end{frame}
@@ -432,18 +433,18 @@ $$
 \begin{frame}[fragile]
 \frametitle{Resultat}
 % Führe fANOVA durch
-<<CA_fANOVA, echo=FALSE, results=hide>>=
+<<CA_fANOVA,echo=FALSE, results='hide',cache=FALSE>>=
 @  
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
       Zeitlicher Trend $\mu(t)$ \"uber alle Vogelarten und Nahrungsquellen
-<<GR_ANOVA_mu, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_ANOVA_mu, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage} 
   \hspace{0.1cm}
   \begin{minipage}{0.48\textwidth}
   Zeitlicher Trend $\alpha(t)$ \"uber die mittlere Differenz 
-<<GR_ANOVA_alpha, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_ANOVA_alpha, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage}
 \end{frame}
@@ -467,11 +468,11 @@ $$
 \subsection{Datensatz: Sterblichkeitsraten schwedischer Frauen}
 \begin{frame}[fragile]
 \frametitle{Datensatz: Sterblichkeitsraten schwedischer Frauen}
-<<CA_mort, echo=FALSE, results=hide>>=
+<<CA_mort, echo=FALSE, results='hide'>>=
 @  
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
-<<GR_bspmort, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_bspmort, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage} 
   \hspace{0.1cm}
@@ -492,11 +493,11 @@ $$
 
 \begin{frame}[fragile]
 \frametitle{Datensatz: Sterblichkeitsraten schwedischer Frauen}
-<<CA_mort, echo=FALSE, results=hide>>=
+<<CA_mort, echo=FALSE, results='hide'>>=
 @  
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
-<<GR_bspmort, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_bspmort, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage} 
   \hspace{0.1cm}
@@ -514,16 +515,16 @@ $$
 
 \begin{frame}[fragile]
 \frametitle{Datensatz: Sterblichkeitsraten schwedischer Frauen}
-<<CA_mort, echo=FALSE, results=hide>>=
+<<CA_mort, echo=FALSE, results='hide'>>=
 @  
   \hspace{-0.1cm}   
   \begin{minipage}{0.48\textwidth}
-<<GR_bspmort, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_bspmort, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage} 
   \hspace{0.1cm}
   \begin{minipage}{0.48\textwidth}
-<<GR_res_org, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_res_org, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage}
 \end{frame}
@@ -557,7 +558,7 @@ $$
 \begin{frame}[fragile]
 \frametitle{Resultat}
   \begin{minipage}{0.48\textwidth}
-<<GR_res, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+<<GR_res, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 @
   \end{minipage} 
   \hspace{0.1cm}
@@ -567,15 +568,15 @@ $$
     \item $x_{i+1}(t) \approx \int x_i(s) \beta_1(s, t)ds$ 
     \item Die Koeffizienten haben einen Einfluss auf der Diagonalen,
     $\beta_1(s-1, s)$
-    \item Sterblichkeitsrate steht in Beziehung zur Sterblichkeitsrate ein vom 
-    vorigen Jahr Minus einem Jahr
+    \item Sterblichkeitsrate des aktuellen Jahres steht in Beziehung zu der 
+    im vorigen Jahr
  \end{itemize}
   \end{minipage}
 \end{frame}
  
   
 %  Originaldaten
-%<<GR_res_org, echo=FALSE, out.height=1\linewidth, out.width=1\linewidth>>=
+%<<GR_res_org, echo=FALSE, out.height='\\linewidth', out.width='\\linewidth'>>=
 %@
 %%%
 %

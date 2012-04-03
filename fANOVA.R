@@ -502,6 +502,7 @@ fig.dat <- cbind(SwedeLogHazard[, c('1751', '1810', '1860')], Swede1920)
 SwedeTime <- 0:80;
 
 rangval <- c(0,80)
+rangval <- c(0,80)
 nbasis <- 23
 SwedeRng <- c(0,80)
 norder <- 4
@@ -532,20 +533,6 @@ Swede.linmod <- linmod(NextYear, LastYear, SwedeBetaList)
 #      xlab="age", ylab="age",zlab="beta(s,t)",
 #      theta=30, phi=30)
 
-
-betafdPar1$lambda <-  10^0.5
-for (j in 1:2) betalist[[j]] <-  betafdPar1
-
-#  carry out the functional regression analysis
-fitShellfish.5 <- fRegress(birdfd3, xfdlist, betalist)
-birdYhatmat <- eval.fd(yearCode, fitShellfish.5$yhatfdobj$fd[1:26])
-rmatb <- logCounts2 - birdYhatmat
-SigmaEb <- var(t(rmatb))
-
-y2cMap.bird <- birdlist2$y2cMap
-
-birdStderrList <- fRegress.stderr(fitShellfish.5, y2cMap.bird, SigmaEb)
-birdBeta.sdList <- birdStderrList$betastderrlist
 
 ################################################################################
 ################################################################################
