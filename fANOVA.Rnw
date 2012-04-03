@@ -49,10 +49,10 @@
 \definecolor{grund}{gray}{.5} 
 
 \title[ ]{Lineare Modelle f\"ur Funktionale Antwortvariablen}
-\date{22. Februar 2012}
+\date{4. April 2012}
 \institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ 
                 Universit\"at Stuttgart}
-\author{Dr. Simon M\"uller}
+\author{Simon M\"uller}
 
 
 % use footnotesize for knitr output
@@ -236,10 +236,10 @@ read_chunk('fANOVA.R')
     \item<3-> Beschreibung statistischer Zusammenh\"ange zwischen unendlich-
               dimensionalen Objekten
     \item<4-> Darstellung der Variation in unendlich-dimensionalen R\"aumen
-    \item<5-> Kleine Stichprobe $n$, hohe Dimension $p=\infty$ (Fluch der   
-              Dimensionen)\\
-    Sei $\lambda$ das Lebesgue-Ma{\ss} auf $(I=[0,1]^p, \mathcal{B}(I))$, dann 
-  	$$\lambda(I) = 1 \textnormal{ und }\lambda(K) = \frac{1}{2^{p}} \dfrac{\pi^{p/2}}{\Gamma(p/2)}$$
+%    \item<5-> Kleine Stichprobe $n$, hohe Dimension $p=\infty$ (Fluch der   
+%              Dimensionen)\\
+%    Sei $\lambda$ das Lebesgue-Ma{\ss} auf $(I=[0,1]^p, \mathcal{B}(I))$, dann 
+%  	$$\lambda(I) = 1 \textnormal{ und }\lambda(K) = \frac{1}{2^{p}} \dfrac{\pi^{p/2}}{\Gamma(p/2)}$$
   \end{itemize}
 \end{frame}
 
@@ -417,7 +417,7 @@ $$
           \sum\limits_{j=1}^{n_2}\beta_{2j}(t) = 0.
         $$
   \item<2-> Der Parameter $\varepsilon_{ijk}(t)$ bezeichnet die Residuen.
-  \item<3-> Keine Einfluss: Bucht und der Interaktion von Bucht $*$ Nahrung
+  \item<3-> Kein Einfluss: Bucht und der Interaktion von Bucht $*$ Nahrung
   \item<4-> Dies ergibt $28$ Gleichungen: $2$ Bl\"ocke der $13$ Vogelarten und die 
         beiden Nebenbedingungen. 
 \end{itemize}
