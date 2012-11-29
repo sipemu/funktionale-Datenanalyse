@@ -1,0 +1,85 @@
+% Created by tikzDevice version 0.6.2 on 2012-04-03 09:59:09
+% !TEX encoding = UTF-8 Unicode
+\documentclass[xcolor=dvipsnames, compress, serif, professionalfont, handout]{beamer}
+
+\usepackage{tikz}
+
+\usepackage[active,tightpage,psfixbb]{preview}
+
+\PreviewEnvironment{pgfpicture}
+
+\setlength\PreviewBorder{0pt}
+
+
+
+\usepackage{pgfpages}
+
+% Gestaltung des themes
+\usetheme{CambridgeUS}
+\usecolortheme{seagull}
+
+%weitere Farbe spezifizieren:
+%Farben von dem Humantheme
+\definecolor{Orange}{RGB}{240,165,19}
+\definecolor{Human-Base}{RGB}{129,102,71}
+%Farben aus dem Inyokatheme
+\definecolor{uuheader1}{RGB}{164,143,101}
+\definecolor{uuheader2}{RGB}{129,106,59}
+
+%Für den Titleframe
+\setbeamertemplate{title page}[default][rounded=true]
+\setbeamercolor{title}{fg=black, bg=white}
+
+% Ohne footer
+\setbeamertemplate{footline}{}
+
+\beamertemplatenavigationsymbolsempty
+
+\useinnertheme{circles}
+\setbeamercovered{transparent}
+
+\setbeamertemplate{enumerate items}[circle]
+\setbeamercolor{enumerate items}{fg=RoyalBlue, bg = white}
+
+\setbeamertemplate{itemize items}[triangle]
+\setbeamercolor{itemize item}{fg=RoyalBlue, bg = white}
+
+% Pakete
+\usepackage{graphicx}
+\usepackage{amsmath, amsfonts, epsfig, xspace}
+\usepackage{german}
+\usepackage{float}
+\usepackage{multimedia}
+\usepackage[normal,tight,center]{subfigure}
+\setlength{\subfigcapskip}{-.5em}
+
+% Schrift  
+\usepackage{pxfonts}
+\usepackage{eulervm} 
+
+\usepackage{color}
+\definecolor{grund}{gray}{.5} 
+
+\title[ ]{Lineare Modelle f\"ur Funktionale Antwortvariablen}
+\date{4. April 2012}
+\institute[ISA]{Institut f\"ur Stochastik und Anwendungen\\ 
+                Universit\"at Stuttgart}
+\author{Simon M\"uller}
+
+
+% use footnotesize for knitr output
+\ifdefined\knitrout
+  \renewenvironment{knitrout}{\begin{footnotesize}}{\end{footnotesize}}
+\else
+\fi
+
+\definecolor{orange}{HTML}{E69F00}
+\definecolor{orange}{HTML}{E69F00}
+
+
+\begin{document}
+
+\begin{tikzpicture}[x=1pt,y=1pt]
+\definecolor[named]{drawColor}{rgb}{0.00,0.00,0.00}
+\definecolor[named]{fillColor}{rgb}{1.00,1.00,1.00}
+\fill[color=fillColor,fill opacity=0.00,] (0,0) rectangle (   nan,   nan);

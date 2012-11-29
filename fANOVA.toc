@@ -1,0 +1,15 @@
+\beamer@endinputifotherversion {3.10pt}
+\beamer@sectionintoc {1}{Einleitung}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Was sind funktionale Daten?}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{Woran sind wir interessiert?}{7}{0}{1}
+\beamer@subsectionintoc {1}{3}{Worin liegen die Herausforderungen?}{8}{0}{1}
+\beamer@subsectionintoc {1}{4}{Referenzen}{9}{0}{1}
+\beamer@sectionintoc {2}{Funktionale Varianzanalyse}{10}{0}{2}
+\beamer@subsectionintoc {2}{1}{Datensatz: Vogelpopulation}{11}{0}{2}
+\beamer@subsectionintoc {2}{2}{Das Modell}{14}{0}{2}
+\beamer@subsectionintoc {2}{3}{Resultat}{17}{0}{2}
+\beamer@sectionintoc {3}{Lineares Funktionales Modell mit Funktionaler Beobachtung}{18}{0}{3}
+\beamer@subsectionintoc {3}{1}{Datensatz: Sterblichkeitsraten schwedischer Frauen}{19}{0}{3}
+\beamer@subsectionintoc {3}{2}{Das Modell}{22}{0}{3}
+\beamer@subsectionintoc {3}{3}{Resultat}{23}{0}{3}
+\beamer@sectionintoc {4}{Eigene Forschung}{24}{0}{4}
